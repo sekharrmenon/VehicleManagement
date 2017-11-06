@@ -10,10 +10,11 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-        
-        
-        
-<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+ 
+<context:annotation-config />      
+<context:component-scan base-package="com.vehicle"/>
+
+ <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
   <property name="prefix">
    <value>/WEB-INF/pages/</value>
   </property>
@@ -21,8 +22,24 @@
    <value>.jsp</value>
   </property>
  </bean>
+
+ <bean id="multipartResolver"
+     class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
  
-  <bean id="dataSource"
+      <!-- Maximum file size: 10MB -->
+      <!-- 10MB = 1250000 Byte -->
+     <property name="maxUploadSize" value="2500000" />
+
+ </bean>
+ 
+ 	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+				<value>classpath:/properties/automotive.properties</value>
+		</property>
+	</bean>
+ 
+ <bean id="dataSource"
          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 	<property name="url" value="${db.host.url}" />
@@ -35,7 +52,7 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan">
             <list>
-                <value>com.datawarehouse.dto</value>
+                <value>com.vehicle.dto</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -47,11 +64,20 @@
         </property>       
     </bean>
     
+    <bean id="messageSource"
+     class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+     p:basename="/WEB-INF/messages" />
+    
       <bean id="transactionManager"  class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
  
     <bean id="persistenceExceptionTranslationPostProcessor"
         class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
- 
- </beans>
+        
+         <mvc:resources mapping="/resources/**" location="/resources/assets/"
+	cache-period="31556926"/>
+	
+	<mvc:annotation-driven />
+
+</beans>
