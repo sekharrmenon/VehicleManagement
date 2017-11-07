@@ -65,8 +65,13 @@
     </bean>
     
     <bean id="messageSource"
-     class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
-     p:basename="/WEB-INF/messages" />
+     class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+             <property name="basename" value="/WEB-INF/messages/messages"/>
+     </bean>
+     
+     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="validationMessageSource" ref="messageSource"/>
+</bean>
     
       <bean id="transactionManager"  class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
