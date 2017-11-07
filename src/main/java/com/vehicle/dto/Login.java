@@ -3,9 +3,7 @@ package com.vehicle.dto;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -17,40 +15,50 @@ public class Login implements java.io.Serializable {
 	
 	@Id
 	@Column(name="username")
-	private String username;
+	private String name;
 	
 	@Column(name="password")
 	private String password;
 	
 	@Column(name="email")
-	private String email;
+	private String emailId;
 	
-	@OneToOne
-	private AccessModelDTO access;
+	@OneToOne(mappedBy = "login", cascade = CascadeType.ALL)
+	private Access access;
 	
 	public Login() {
 	}
 
-	public Login(String username,String password,String email) {
-		this.username=username;
+	public Login(String name,String password,String emailId) {
+		this.name=name;
 		this.password=password;
-		this.email=email;
+		this.emailId=emailId;
 	}
-	public Login(String username,String password,String email,AccessModelDTO access) {
-		this.username=username;
+	public Login(String name,String password,String emailId,Access access) {
+		this.name=name;
 		this.password=password;
-		this.email=email;
+		this.emailId=emailId;
 		this.access=access;
 	}
 	
 
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -58,18 +66,13 @@ public class Login implements java.io.Serializable {
 		this.password = password;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
-	public AccessModelDTO getAccess() {
+
+	public Access getAccess() {
 		return access;
 	}
 
-	public void setAccess(AccessModelDTO access) {
+	public void setAccess(Access access) {
 		this.access = access;
 	}
 	

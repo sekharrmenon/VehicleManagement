@@ -5,6 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import com.vehicle.dto.Login;
 import com.vehicle.dto.LoginDTO;
 
 @Component
@@ -12,7 +13,7 @@ public class LoginValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> arg0) {
-		return LoginDTO.class.equals(arg0);
+		return LoginDTO.class.equals(arg0) || Login.class.equals(arg0) ;
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.vehicle.dto.Login;
 import com.vehicle.dto.LoginDTO;
 import com.vehicle.service.VehicleService;
 import com.vehicle.utils.LoginValidator;
@@ -66,9 +67,10 @@ public class VehicleController {
 		   mv.setViewName("Login");
 		   if (result.hasErrors()) {
 			   mv.setViewName("Login");
-		         return mv;
 		      }else {
-		    	  vehicleService.authenticate(login);
+		    	 Login user= vehicleService.authenticate(login);
+		    	 mv.addObject("user",user);
+		    	 mv.setViewName("VehicleHome");
 		      }
 		return mv;
 	    }

@@ -1,9 +1,10 @@
 package com.vehicle.service;
 
+import com.vehicle.dto.Login;
 import com.vehicle.dto.LoginDTO;
 
 public interface VehicleService {
 
-	String authenticate(LoginDTO login);
+	Login authenticate(LoginDTO login);
 
 }

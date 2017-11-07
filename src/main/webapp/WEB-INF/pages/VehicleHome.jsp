@@ -60,7 +60,7 @@
 						</div>
 					</form>
 					<ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
-						<li><a href="/vehiclemanagement/login">Login</a></li>
+						<c:if test="${user.access.view==true}"><li><a href="/vehiclemanagement/login">Login</a></li></c:if>				
 						<li><a href="#">Register</a></li>
 						<li><a href="#">Highligths</a></li>
 						<li><a href="#">Mission</a></li>

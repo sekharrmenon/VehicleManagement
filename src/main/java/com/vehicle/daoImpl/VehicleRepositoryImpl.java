@@ -1,3 +1,4 @@
+
 package com.vehicle.daoImpl;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public String authenticateUser(LoginDTO login) {
+	public Login authenticateUser(LoginDTO login) {
 		Session session = sessionFactory.openSession();
 		Query query = session.createQuery("from Login where username=:name and password=:password");
 		query.setParameter("name", login.getUsername());
@@ -32,13 +33,16 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 		
 
 			try {
-				List user=  (List) list.get(0);
+				Login user=  list.get(0);
+				return user;
 			} catch (Exception e) {
-				return null;
+				return new Login();
 			
+			}finally{
+				session.close();
 			}
-			return null;
-	
+		
+			
 
 		
 	}

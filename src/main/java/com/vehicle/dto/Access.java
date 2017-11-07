@@ -1,25 +1,22 @@
 package com.vehicle.dto;
 
-import javax.persistence.Access;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Type;
 
-import com.vehicle.dto.Login;
-
 @Entity
 @Table(name="access",uniqueConstraints = { @UniqueConstraint(columnNames = "username")})
-public class AccessModelDTO implements java.io.Serializable {
+public class Access implements java.io.Serializable {
 	
-	private String 	username;
+	@Id
+	@Column(name="username", unique = true)
+	private String 	name;
 	
 	@Column(name="view",columnDefinition = "TINYINT")
 	@Type(type = "org.hibernate.type.NumericBooleanType")
@@ -38,28 +35,22 @@ public class AccessModelDTO implements java.io.Serializable {
 	private Boolean delete;
 	
 	@OneToOne
+	@JoinColumn(name = "username")
 	private Login login;
 	
-	public  AccessModelDTO() {
+	
+	public  Access() {
 		
 	}
 	
-	public AccessModelDTO(String username,Boolean view,Boolean edit,Boolean delete,Boolean create) {
-		this.username=username;
+	public Access(String name,Boolean view,Boolean edit,Boolean delete,Boolean create) {
+		this.name=name;
 		this.view=view;
 		this.edit=edit;
 		this.delete=delete;
 		this.create=create;
 	}
 	
-	public AccessModelDTO(Login login,String username,Boolean view,Boolean edit,Boolean delete,Boolean create) {
-		this.username=username;
-		this.view=view;
-		this.edit=edit;
-		this.delete=delete;
-		this.create=create;
-		this.login=login;
-	}
 	
 	
 
@@ -92,13 +83,11 @@ public class AccessModelDTO implements java.io.Serializable {
 		this.delete = delete;
 	}
 	
-	@Id
-	@Column(name="username", unique = true)
 	public String getName() {
-		return username;
+		return name;
 	}
-	public void setName(String username) {
-		this.username = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Login getLogin() {
@@ -108,6 +97,7 @@ public class AccessModelDTO implements java.io.Serializable {
 	public void setLogin(Login login) {
 		this.login = login;
 	}
+
 	
 
 	
