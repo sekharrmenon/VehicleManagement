@@ -1,11 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page session="false"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
+    <script type="text/javascript">
+    var msg ='${msg}';
+    </script>
 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,11 +36,10 @@
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
         <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
-
+	
     </head>
 
     <body>
-		
 		<!-- Top menu -->
 		<nav class="navbar navbar-inverse" role="navigation">
 			<div class="container">
@@ -63,7 +66,7 @@
 						<c:if test="${user.access.view==true}"><li><a href="/vehiclemanagement/login">Login</a></li></c:if>				
 						<li><a href="/vehiclemanagement/newVehicle">Add vehicle</a></li>
 						<li><a href="#">Highligths</a></li>
-						<li><a href="#">View</a></li>
+						<li><a href="/vehiclemanagement/view">View</a></li>
 					</ul>
 				</div>
 			</div>
@@ -98,6 +101,10 @@
                 </div>
 	        </div>
         </footer>
+        
+       	<div class="alert alert-success" id="message">
+  		<strong>${msg}</strong> 
+		</div>
 
 
         <!-- Javascript -->
@@ -106,6 +113,7 @@
         <script src="resources/js/jquery.backstretch.min.js"></script>
         <script src="resources/js/wow.min.js"></script>
         <script src="resources/js/scripts.js"></script>
+         <script src="resources/js/vehiclehome.js"></script>
         
         <!--[if lt IE 10]>
             <script src="assets/js/placeholder.js"></script>

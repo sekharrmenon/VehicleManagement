@@ -14,7 +14,7 @@
 <div class="container">
 
 	<c:choose>
-			  <c:when test="${vehicle.id=null}">
+			  <c:when test="${vehicle.id==null}">
 			<h1>Add Vehicle</h1>
 		</c:when>
 		<c:otherwise>
@@ -23,7 +23,7 @@
 	</c:choose>
 	<br />
 
-	<spring:url value="/vehicle/add" var="vehicleActionUrl" />
+	<spring:url value="/newVehicle" var="vehicleActionUrl" />
 
 	<form:form class="form-horizontal" method="post"
                 modelAttribute="vehicleForm" action="${vehicleActionUrl}">
@@ -36,7 +36,7 @@
 			<div class="col-sm-10">
 				<form:input path="vehiclename" type="text" class="form-control"
                                 id="vehiclename" placeholder="VehicleName" />
-				<form:errors path="name" class="control-label" />
+				<form:errors path="vehiclename" class="control-label" />
 			</div>
 		  </div>
 		</spring:bind>
@@ -73,11 +73,11 @@
 				</label>
                                 <label class="radio-inline">
                                   <form:radiobutton path="type" value="bike" /> Bike
-				</label> <br />
+				</label>
 				                                <label class="radio-inline">
                                   <form:radiobutton path="type" value="truck" /> Heavy Vehicle
 				</label> <br />
-				<form:errors path="sex" class="control-label" />
+				<form:errors path="type" class="control-label" />
 			</div>
 		  </div>
 		</spring:bind>
@@ -86,7 +86,7 @@
 		<div class="form-group">
 		  <div class="col-sm-offset-2 col-sm-10">
 			<c:choose>
-			  <c:when test="${vehicle.id=null}">
+			  <c:when test="${vehicle.id==null}">
 			     <button type="submit" class="btn-lg btn-primary pull-right">Add Vehicle
                              </button>
 			  </c:when>

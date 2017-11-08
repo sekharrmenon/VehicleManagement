@@ -1,14 +1,57 @@
 package com.vehicle.dto;
 
-public class VehicleDTO {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+
+@Entity
+@Table(name="vehicle",uniqueConstraints = { @UniqueConstraint(columnNames = "vehicle_id")})
+public class Vehicle {
 	
+	
+	@Id
+	@GeneratedValue
+	@Column(name="vehicle_id")
 	private	Integer id;
+	
+	@Column(name="vehicle_name")
 	private String vehiclename;
+	
+	@Column(name="vehicle_brand")
 	private String brand;
+	
+	@Column(name="vehicle_model")
 	private String model;
+	
+	@Column(name="vehicle_type")
 	private String type;
+	
+	@Column(name="vehicle_lattitude")
 	private Double lattitude;
+	
+	@Column(name="vehicle_longitude")
 	private Double longitude;
+	
+	
+	public Vehicle() {
+		
+	}
+	
+	public Vehicle(String vehiclename,String brand,String model,String type,Double lattitude,Double longitude) {
+		this.vehiclename=vehiclename;
+		this.brand=brand;
+		this.model=model;
+		this.lattitude=lattitude;
+		this.type=type;
+		this.longitude=longitude;
+		
+		
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -51,12 +94,5 @@ public class VehicleDTO {
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-	
-	//Check if this is for New of Update
-		public boolean isNew() {
-			return (this.id == null);
-		}
-	
-	
 
 }

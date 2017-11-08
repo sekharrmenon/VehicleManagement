@@ -1,5 +1,7 @@
 package com.vehicle.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vehicle.dto.Login;
 import com.vehicle.dto.LoginDTO;
+import com.vehicle.dto.Vehicle;
+import com.vehicle.dto.VehicleDTO;
 import com.vehicle.service.VehicleService;
 import com.vehicle.utils.LoginValidator;
+import com.vehicle.utils.VehicleValidator;
 
 
 @Controller
@@ -31,9 +36,17 @@ public class VehicleController {
 	   @Autowired
 	   private LoginValidator loginValidator;
 	   
-	   @InitBinder
-	   protected void initBinder(WebDataBinder binder) {
+	   @Autowired
+	   private VehicleValidator vehicleValidator;
+	   
+	   @InitBinder("loginform")
+	   protected void loginBinder(WebDataBinder binder) {
 	      binder.addValidators(loginValidator);
+	   }
+	   
+	   @InitBinder("vehicleForm")
+	   protected void vehicleBinder(WebDataBinder binder) {
+	      binder.addValidators(vehicleValidator);
 	   }
 	
 	private static final Logger logger = LoggerFactory
@@ -74,5 +87,44 @@ public class VehicleController {
 		      }
 		return mv;
 	    }
+	 
+	 @RequestMapping(value="/newVehicle", method = RequestMethod.GET)
+	    public ModelAndView vehicleForm() {
+		 logger.info("Inside the vehicle form method");
+		   ModelAndView mv = new ModelAndView();
+		   mv.addObject("vehicleForm", new VehicleDTO());
+		   mv.setViewName("VehicleForm");
+	       return mv;
+	    }
+	 
+	 @RequestMapping(value="/newVehicle", method = RequestMethod.POST)
+	    public String createVehicle(@ModelAttribute("vehicleForm")@Validated VehicleDTO vehicle,
+				BindingResult result, Model model,
+				final RedirectAttributes redirectAttributes) {
+		   logger.info("Inside the create vehicle method");
+		   ModelAndView mv = new ModelAndView();
+		   mv.setViewName("VehicleHome");
+		   if (result.hasErrors()) {
+			   return "VehicleForm" ;
+		      }else {
+					String status=vehicleService.addVehicle(vehicle);
+					redirectAttributes.addFlashAttribute("msg", status);
+
+		      }
+		return  "redirect:/";
+	    }
+	 
+	 @RequestMapping(value="/view", method = RequestMethod.GET)
+	    public ModelAndView viewVehicle() {
+		   logger.info("Inside the create vehicle method");
+		   ModelAndView mv = new ModelAndView();
+		   mv.setViewName("VehicleList");
+		   List<Vehicle> vehicles=vehicleService.listVehicles();
+		   mv.addObject("vehicle", vehicles);
+		return  mv;
+	    }
+	
+	 
+	 
 
 }
