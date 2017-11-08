@@ -55,9 +55,6 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 				session.close();
 			}
 		
-			
-
-		
 	}
 
 	@Override
@@ -73,30 +70,84 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 		} catch (Exception e) {
 			logger.info("Error creating vehicle"+e.getMessage());
 			return "Error creating vehicle";
+		}finally{
+			session.close();
 		}
 	    
 	    return "Vehicle added successfully";
 	}
 
 	@Override
-	public void update(VehicleDTO vehicle) {
-		// TODO Auto-generated method stub
+	public String update(Vehicle vehicle) {
+		Session session = sessionFactory.openSession();
+	    try {
+			Transaction tx = session.beginTransaction();
+			session.update(vehicle);
+			tx.commit();
+			logger.info("Vehicle update successfully");
+			
+		} catch (Exception e) {
+			logger.info("Error updating vehicle"+e.getMessage());
+			return "Error updating vehicle";
+		}finally{
+			session.close();
+		}
+	    
+	    return "Vehicle updated successfully";
 		
 	}
 
 	@Override
 	public List<Vehicle> getVehicles() {
 		List<Vehicle> list= new ArrayList<Vehicle>();
+		Session session = sessionFactory.openSession();
 		try {
-			Session session = sessionFactory.openSession();
-			Query query = session.createQuery("from Vehicle");
-			list = query.list();
+			list = session.createQuery("from Vehicle").list();
 			logger.info("Vehicle fetch success");
 		} catch (HibernateException e) {
 			logger.info("No vehicle in the db");
 			e.printStackTrace();
+		}finally{
+			session.close();
 		}
 		return list;
+	}
+
+	@Override
+	public String delete(int id) {
+		Session session = sessionFactory.openSession();
+		try {
+			Query q = session.createQuery("delete Vehicle where id=:vehicleId");
+			q.setParameter("vehicleId", id);
+			q.executeUpdate();
+			logger.info("Vehicle deleted success");
+		} catch (HibernateException e) {
+			logger.info("Vehicle Deletion Failed");
+			e.printStackTrace();
+			return "Vehicle Deletion Failed";
+		}finally{
+			session.close();
+		}
+		return "Vehicle Deleted Successfully";
+	}
+
+	@Override
+	public Vehicle findVehicle(int id) {
+		
+		Session session = sessionFactory.openSession();
+		Query query = session.createQuery("from Vehicle where vehicle_id=:id");
+		query.setParameter("id", id);
+		List<Vehicle> list = query.list();
+			try {
+				Vehicle vehicle=  list.get(0);
+				logger.info("Vehicle fetch success");
+				return vehicle;
+			} catch (Exception e) {
+				return new Vehicle();
+			
+			}finally{
+				session.close();
+			}
 	}
 
 }

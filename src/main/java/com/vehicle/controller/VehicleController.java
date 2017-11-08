@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -116,13 +117,50 @@ public class VehicleController {
 	 
 	 @RequestMapping(value="/view", method = RequestMethod.GET)
 	    public ModelAndView viewVehicle() {
-		   logger.info("Inside the create vehicle method");
+		   logger.info("Inside the view vehicle method");
 		   ModelAndView mv = new ModelAndView();
 		   mv.setViewName("VehicleList");
 		   List<Vehicle> vehicles=vehicleService.listVehicles();
 		   mv.addObject("vehicle", vehicles);
 		return  mv;
 	    }
+	 
+	 
+		// delete vehicle
+		@RequestMapping(value = "/vehicle/{id}/delete", method = RequestMethod.GET)
+		public String deleteUser(@PathVariable("id") int id,
+			final RedirectAttributes redirectAttributes) {
+
+			logger.debug("deletevehicle() : {}", id);
+
+			String status=vehicleService.delete(id);
+
+			redirectAttributes.addFlashAttribute("css", "success");
+			redirectAttributes.addFlashAttribute("msg", status);
+
+			return "redirect:/view";
+
+		}
+		
+		@RequestMapping(value = "/vehicle/{id}/update", method = RequestMethod.GET)
+		public String update(@PathVariable("id") int id, Model model,
+				final RedirectAttributes redirectAttributes) {
+
+			logger.debug("updatevehicle() : {}", id);
+			ModelAndView mv = new ModelAndView();
+			Vehicle vehicle= vehicleService.findById(id);
+			redirectAttributes.addFlashAttribute("vehicleForm", vehicle);
+			return "redirect:/updateVehicle";
+
+		}
+		
+		 @RequestMapping(value="/updateVehicle", method = RequestMethod.GET)
+		    public ModelAndView updateVehicle() {
+			 logger.info("Inside the update redirect method");
+			   ModelAndView mv = new ModelAndView();
+			   mv.setViewName("VehicleForm");
+		       return mv;
+		    }
 	
 	 
 	 

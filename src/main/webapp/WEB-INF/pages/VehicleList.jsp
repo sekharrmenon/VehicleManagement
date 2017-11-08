@@ -8,9 +8,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
 </head>
 <body>
+<jsp:include page="./Navigation.jsp" />
+<div class="container">
+		<c:if test="${not empty msg}">
+		    <div class="alert alert-${css} alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert"
+                                aria-label="Close">
+				<span aria-hidden="true">×</span>
+			</button>
+			<strong>${msg}</strong>
+		    </div>
+		</c:if>
 <h1>All Vehicle</h1>
 <table class="table table-striped">
 			<thead>
@@ -23,7 +33,7 @@
 				</tr>
 			</thead>
 
-			<c:forEach var="vehicle" items="${vehicles}">
+			<c:forEach var="vehicle" items="${vehicle}">
 			    <tr>
 				<td>
 					${vehicle.id}
@@ -40,13 +50,13 @@
 				  <button class="btn btn-info"
                                           onclick="location.href='${viewUrl}'">View</button>
 				  <button class="btn btn-primary"
-                                          onclick="location.href='${updateUrl}'">Update</button>
+                                          onclick="location.href=('${updateUrl}');this.disabled=true">Update</button>
 				  <button class="btn btn-danger"
-                                          onclick="this.disabled=true;post('${deleteUrl}')">Delete</button>
+                                           onclick="location.href=('${deleteUrl}');this.disabled=true">Delete</button>
                                 </td>
 			    </tr>
 			</c:forEach>
 		</table>
-
+</div>
 </body>
 </html>

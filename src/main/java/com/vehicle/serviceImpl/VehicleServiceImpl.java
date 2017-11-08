@@ -39,13 +39,16 @@ public class VehicleServiceImpl implements VehicleService {
 			//BeanUtils.copyProperties(myPojo, result);
 			 status= vehicleRepository.save(getVehicleModel(vehicle));
 		} else {
-			vehicleRepository.update(vehicle);
+			status=vehicleRepository.update(getVehicleModel(vehicle));
 		}
 		return status;
 	}
 
 	private Vehicle getVehicleModel(VehicleDTO vehicle) {
 		Vehicle modelVehicle = new Vehicle();
+				if(null!=vehicle.getId()){
+					modelVehicle.setId(vehicle.getId());	
+				}
 				modelVehicle.setVehiclename(vehicle.getVehiclename());
 				modelVehicle.setBrand(vehicle.getBrand());
 				modelVehicle.setModel(vehicle.getModel());
@@ -61,6 +64,18 @@ public class VehicleServiceImpl implements VehicleService {
 	@Override
 	public List<Vehicle> listVehicles() {
 		return vehicleRepository.getVehicles();
+	}
+
+	@Override
+	public String delete(int id) {
+		String status=vehicleRepository.delete(id);
+		return status;
+		
+	}
+
+	@Override
+	public Vehicle findById(int id) {
+		return vehicleRepository.findVehicle(id);
 	}
 
 }

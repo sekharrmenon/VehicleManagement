@@ -7,14 +7,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
-        <script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
-
+<body>
+<jsp:include page="./Navigation.jsp" />
 <div class="container">
 
 	<c:choose>
-			  <c:when test="${vehicle.id==null}">
+			  <c:when test="${vehicleForm.id==null}">
 			<h1>Add Vehicle</h1>
 		</c:when>
 		<c:otherwise>
@@ -69,7 +69,7 @@
 			<label class="col-sm-2 control-label">Type</label>
 			<div class="col-sm-10">
 				<label class="radio-inline">
-                                  <form:radiobutton path="type" value="car" /> Car
+                                  <form:radiobutton path="type" value="car"  /> Car
 				</label>
                                 <label class="radio-inline">
                                   <form:radiobutton path="type" value="bike" /> Bike
@@ -81,12 +81,34 @@
 			</div>
 		  </div>
 		</spring:bind>
+		
+				<spring:bind path="longitude">
+		  <div class="form-group ${status.error ? 'has-error' : ''}">
+			<label class="col-sm-2 control-label">longitude</label>
+			<div class="col-sm-10">
+				<form:hidden path="longitude" class="form-control"
+                                id="longitude" placeholder="longitude" />
+				<form:errors path="longitude" class="control-label" />
+			</div>
+		  </div>
+		</spring:bind>
+		
+	<spring:bind path="lattitude">
+		  <div class="form-group ${status.error ? 'has-error' : ''}">
+			<label class="col-sm-2 control-label">lattitude</label>
+			<div class="col-sm-10">
+				<form:hidden path="lattitude" class="form-control"
+                                id="lattitude" placeholder="Brand" />
+				<form:errors path="lattitude" class="control-label" />
+			</div>
+		  </div>
+		</spring:bind>
 
 
 		<div class="form-group">
 		  <div class="col-sm-offset-2 col-sm-10">
 			<c:choose>
-			  <c:when test="${vehicle.id==null}">
+			  <c:when test="${vehicleForm.id==null}">
 			     <button type="submit" class="btn-lg btn-primary pull-right">Add Vehicle
                              </button>
 			  </c:when>
@@ -100,7 +122,5 @@
 	</form:form>
 
 </div>
-
-
 </body>
 </html>

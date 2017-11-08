@@ -13,9 +13,13 @@ public interface VehicleRepository {
 
 	String save(Vehicle vehicle);
 
-	void update(VehicleDTO vehicle);
+	String update(Vehicle vehicle);
 
 	List<Vehicle> getVehicles();
+
+	String delete(int id);
+
+	Vehicle findVehicle(int id);
 	
 
 }
