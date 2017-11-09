@@ -20,6 +20,8 @@ public interface VehicleRepository {
 	String delete(int id);
 
 	Vehicle findVehicle(int id);
+
+	List<Vehicle> findVehicle(String name);
 	
 
 }

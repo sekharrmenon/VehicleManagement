@@ -44,7 +44,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.html">Vehicle Management</a>
+					<a class="navbar-brand" href="index.html">Vehicle Management   ${userDetails.username} </a>
 				</div>
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="top-navbar-1">
@@ -57,10 +57,20 @@
 						</div>
 					</form>
 					<ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
-						<c:if test="${user.access.view==true}"><li><a href="/vehiclemanagement/login">Login</a></li></c:if>				
+<%-- 						<c:if test="${user.access.view==true}"><li><a href="/vehiclemanagement/login">Login</a></li></c:if>	 --%>
+						<c:choose>
+    						<c:when test="${empty user.name}">
+        						<li><a href="/vehiclemanagement/login">Login</a></li>
+    						</c:when>
+    					<c:otherwise>
+        				<li><a href="/vehiclemanagement/logout">Logout</a></li>
+    						</c:otherwise>
+					</c:choose>
+						<li><a href="/vehiclemanagement/">Home</a></li>		
 						<li><a href="/vehiclemanagement/newVehicle">Add vehicle</a></li>
 						<li><a href="#">Highligths</a></li>
 						<li><a href="/vehiclemanagement/view">View</a></li>
+						
 					</ul>
 				</div>
 			</div>

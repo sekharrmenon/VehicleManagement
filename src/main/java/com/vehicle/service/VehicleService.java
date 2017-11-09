@@ -11,13 +11,15 @@ public interface VehicleService {
 
 	Login authenticate(LoginDTO login);
 
-	String addVehicle(VehicleDTO vehicle);
+	String addVehicle(VehicleDTO vehicle, String string);
 
 	List<Vehicle> listVehicles();
 
 	String delete(int id);
 
 	Vehicle findById(int id);
+
+	List<Vehicle> findbyUser(String name);
 	
 	
 	

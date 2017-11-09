@@ -64,7 +64,6 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 			Transaction tx = session.beginTransaction();
 			session.save(vehicle);
 			tx.commit();
-			session.close();
 			logger.info("Vehicle added successfully");
 			
 		} catch (Exception e) {
@@ -148,6 +147,17 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 			}finally{
 				session.close();
 			}
+	}
+
+	@Override
+	public List<Vehicle> findVehicle(String name) {
+		Session session = sessionFactory.openSession();
+		Query query = session.createQuery("from Vehicle where vehicle_user=:name");
+		query.setParameter("name", name);
+		List<Vehicle> list = query.list();
+		session.close();
+		return list;
+		
 	}
 
 }

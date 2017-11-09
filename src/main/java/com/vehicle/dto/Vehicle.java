@@ -36,18 +36,22 @@ public class Vehicle {
 	@Column(name="vehicle_longitude")
 	private Double longitude;
 	
+	@Column(name="vehicle_user")
+	private String username;
+	
 	
 	public Vehicle() {
 		
 	}
 	
-	public Vehicle(String vehiclename,String brand,String model,String type,Double lattitude,Double longitude) {
+	public Vehicle(String vehiclename,String brand,String model,String type,Double lattitude,Double longitude,String username) {
 		this.vehiclename=vehiclename;
 		this.brand=brand;
 		this.model=model;
 		this.lattitude=lattitude;
 		this.type=type;
 		this.longitude=longitude;
+		this.username=username;
 		
 		
 	}
@@ -58,6 +62,14 @@ public class Vehicle {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getVehiclename() {
 		return vehiclename;
 	}

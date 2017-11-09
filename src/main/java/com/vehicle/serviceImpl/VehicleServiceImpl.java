@@ -33,28 +33,29 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 
 	@Override
-	public String addVehicle(VehicleDTO vehicle) {
+	public String addVehicle(VehicleDTO vehicle,String name) {
 		String status="";
 		if (vehicle.isNew()) {
 			//BeanUtils.copyProperties(myPojo, result);
-			 status= vehicleRepository.save(getVehicleModel(vehicle));
+			 status= vehicleRepository.save(getVehicleModel(vehicle,name));
 		} else {
-			status=vehicleRepository.update(getVehicleModel(vehicle));
+			status=vehicleRepository.update(getVehicleModel(vehicle,name));
 		}
 		return status;
 	}
 
-	private Vehicle getVehicleModel(VehicleDTO vehicle) {
+	private Vehicle getVehicleModel(VehicleDTO vehicle,String name) {
 		Vehicle modelVehicle = new Vehicle();
 				if(null!=vehicle.getId()){
 					modelVehicle.setId(vehicle.getId());	
 				}
+				modelVehicle.setUsername(name);
 				modelVehicle.setVehiclename(vehicle.getVehiclename());
 				modelVehicle.setBrand(vehicle.getBrand());
 				modelVehicle.setModel(vehicle.getModel());
 				modelVehicle.setType(vehicle.getType());
-				modelVehicle.setLattitude(25.2048);
-				modelVehicle.setLongitude(55.2708);
+				modelVehicle.setLattitude(vehicle.getLattitude());
+				modelVehicle.setLongitude(vehicle.getLongitude());
 				
 				//modelVehicle.setLattitude(vehicle.getLattitude());
 				//modelVehicle.setLongitude(vehicle.getLongitude());
@@ -76,6 +77,11 @@ public class VehicleServiceImpl implements VehicleService {
 	@Override
 	public Vehicle findById(int id) {
 		return vehicleRepository.findVehicle(id);
+	}
+
+	@Override
+	public List<Vehicle> findbyUser(String name) {
+		return vehicleRepository.findVehicle(name);
 	}
 
 }

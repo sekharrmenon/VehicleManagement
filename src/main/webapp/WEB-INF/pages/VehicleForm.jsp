@@ -8,6 +8,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" href="resources/leaflet/leaflet.css">
 </head>
 <body>
 <jsp:include page="./Navigation.jsp" />
@@ -29,6 +30,8 @@
                 modelAttribute="vehicleForm" action="${vehicleActionUrl}">
 
 		<form:hidden path="id" />
+		<form:hidden path="lattitude" id="lattitude"/>
+		<form:hidden path="longitude" id="longitude"/>
 
 		<spring:bind path="vehiclename">
 		  <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -80,31 +83,7 @@
 				<form:errors path="type" class="control-label" />
 			</div>
 		  </div>
-		</spring:bind>
-		
-				<spring:bind path="longitude">
-		  <div class="form-group ${status.error ? 'has-error' : ''}">
-			<label class="col-sm-2 control-label">longitude</label>
-			<div class="col-sm-10">
-				<form:hidden path="longitude" class="form-control"
-                                id="longitude" placeholder="longitude" />
-				<form:errors path="longitude" class="control-label" />
-			</div>
-		  </div>
-		</spring:bind>
-		
-	<spring:bind path="lattitude">
-		  <div class="form-group ${status.error ? 'has-error' : ''}">
-			<label class="col-sm-2 control-label">lattitude</label>
-			<div class="col-sm-10">
-				<form:hidden path="lattitude" class="form-control"
-                                id="lattitude" placeholder="Brand" />
-				<form:errors path="lattitude" class="control-label" />
-			</div>
-		  </div>
-		</spring:bind>
-
-
+		</spring:bind>		
 		<div class="form-group">
 		  <div class="col-sm-offset-2 col-sm-10">
 			<c:choose>
@@ -119,8 +98,14 @@
 			</c:choose>
 		  </div>
 		</div>
+	<jsp:include page="./getTagTemplate.jsp" />
 	</form:form>
 
 </div>
 </body>
+<script src="resources/leaflet/leaflet.js"></script>
+<script>
+FnInitiateMap();
+FnReDrawFields();
+</script>
 </html>
