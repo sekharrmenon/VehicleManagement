@@ -5,19 +5,18 @@ import java.util.List;
 import com.vehicle.dto.Login;
 import com.vehicle.dto.LoginDTO;
 import com.vehicle.dto.Vehicle;
-import com.vehicle.dto.VehicleDTO;
 
-public interface VehicleRepository {
+public interface VehicleRepository   {
 
 	Login authenticateUser(LoginDTO login);
 
-	String save(Vehicle vehicle);
+	Integer saveVehicle(Vehicle vehicle);
 
-	String update(Vehicle vehicle);
+	String updateVehicle(Vehicle vehicle);
 
 	List<Vehicle> getVehicles();
 
-	String delete(int id);
+	String deleteVehicle(int id);
 
 	Vehicle findVehicle(int id);
 

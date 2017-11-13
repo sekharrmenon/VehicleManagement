@@ -1,6 +1,9 @@
 package com.vehicle.controller;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,8 +25,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.vehicle.dto.Login;
 import com.vehicle.dto.LoginDTO;
+import com.vehicle.dto.SearchDTO;
 import com.vehicle.dto.Vehicle;
 import com.vehicle.dto.VehicleDTO;
 import com.vehicle.service.VehicleService;
@@ -63,6 +68,7 @@ public class VehicleController {
 	    public ModelAndView welcome(ModelMap model) {
 		 logger.info("Inside the startup method");
 		   ModelAndView mv = new ModelAndView();
+		   mv.addObject("searchForm", new SearchDTO());	   
 	       mv.setViewName("VehicleHome");
 	       return mv;
 	    }
@@ -81,6 +87,7 @@ public class VehicleController {
 		 logger.info("Inside the lgout method");
 		   ModelAndView mv = new ModelAndView();
 		   session.removeAttribute("userDetails");
+		   session.invalidate();
 		   redirectAttributes.addFlashAttribute("user", new Login());
 		   return  "redirect:/";
 	    }
@@ -89,6 +96,8 @@ public class VehicleController {
 	    public ModelAndView authenticate(@ModelAttribute("loginForm")@Validated LoginDTO login,
 				BindingResult result, Model model,
 				final RedirectAttributes redirectAttributes,HttpSession session) {
+		 
+		   loginValidator.validate(login, result);
 		   logger.info("Inside the authenticate method");
 		   ModelAndView mv = new ModelAndView();
 		   mv.setViewName("Login");
@@ -97,6 +106,7 @@ public class VehicleController {
 		      }else {
 		    	 Login user= vehicleService.authenticate(login);;		    	 
 		    	 session.setAttribute("userDetails", user);
+		    	 mv.addObject("searchForm", new SearchDTO());
 		    	 mv.addObject("user",user);
 		    	 mv.addObject("msg","");
 		    	 mv.setViewName("VehicleHome");
@@ -109,6 +119,8 @@ public class VehicleController {
 		 logger.info("Inside the vehicle form method");
 		   ModelAndView mv = new ModelAndView();
 		   //userDetails
+		   Login loggedUser=(Login) session.getAttribute("userDetails");
+		   mv.addObject("user",loggedUser);
 		   mv.addObject("vehicleForm", new VehicleDTO());
 		   mv.setViewName("VehicleForm");
 	       return mv;
@@ -119,6 +131,7 @@ public class VehicleController {
 				BindingResult result, Model model,HttpSession session,
 				final RedirectAttributes redirectAttributes) {
 		   logger.info("Inside the create vehicle method");
+		   vehicleValidator.validate(vehicle, result);
 		   ModelAndView mv = new ModelAndView();
 		   mv.setViewName("VehicleHome");
 		   Login loggedUser=(Login) session.getAttribute("userDetails");
@@ -126,6 +139,7 @@ public class VehicleController {
 			   return "VehicleForm" ;
 		      }else {
 					String status=vehicleService.addVehicle(vehicle,loggedUser.getName());
+					redirectAttributes.addFlashAttribute("css", "success");
 					redirectAttributes.addFlashAttribute("msg", status);
 
 		      }
@@ -133,9 +147,11 @@ public class VehicleController {
 	    }
 	 
 	 @RequestMapping(value="/view", method = RequestMethod.GET)
-	    public ModelAndView viewVehicle() {
+	    public ModelAndView viewVehicle(HttpSession session) {
 		   logger.info("Inside the view vehicle method");
+		   Login loggedUser=(Login) session.getAttribute("userDetails");
 		   ModelAndView mv = new ModelAndView();
+		   mv.addObject("user",loggedUser);
 		   mv.setViewName("VehicleList");
 		   List<Vehicle> vehicles=vehicleService.listVehicles();
 		   mv.addObject("vehicle", vehicles);
@@ -172,9 +188,11 @@ public class VehicleController {
 		}
 		
 		 @RequestMapping(value="/updateVehicle", method = RequestMethod.GET)
-		    public ModelAndView updateVehicle() {
+		    public ModelAndView updateVehicle(HttpSession session) {
 			 logger.info("Inside the update redirect method");
 			   ModelAndView mv = new ModelAndView();
+			   Login loggedUser=(Login) session.getAttribute("userDetails");
+			   mv.addObject("user",loggedUser);
 			   mv.setViewName("VehicleForm");
 		       return mv;
 		    }
@@ -184,12 +202,33 @@ public class VehicleController {
 		    public ModelAndView trackVehicle(HttpSession session) {
 			 logger.info("Inside the track vehicle method");
 			   ModelAndView mv = new ModelAndView();
+				Gson gson = new Gson();
 			   Login loggedUser=(Login) session.getAttribute("userDetails");
 			   List<Vehicle> vehicle=vehicleService.findbyUser(loggedUser.getName());
-			   mv.addObject("allVehicles", vehicle);
+			   mv.addObject("user",loggedUser);
+			   mv.addObject("allVehicles", gson.toJson(vehicle));
 			   mv.setViewName("VehicleTracking");
 		       return mv;
 		    }
+		 
+		 @RequestMapping(value="/search", method = RequestMethod.POST)
+		    public ModelAndView search(HttpSession session,@ModelAttribute("searchForm")@Validated SearchDTO vehicle) {
+			 logger.info("Inside the track vehicle method");
+			   ModelAndView mv = new ModelAndView();
+			  // Login loggedUser=(Login) session.getAttribute("userDetails");
+			   Set<Vehicle> vehicles = new HashSet<Vehicle>();
+			   if(!(vehicle.getVehicleType().equalsIgnoreCase("all"))){
+				    vehicles=vehicleService.searchByType(vehicle);   
+			   }else{
+				    vehicles=vehicleService.search(vehicle);
+			   }
+			  // mv.addObject("user",loggedUser);
+			   mv.addObject("searchParam", vehicle.getSearch());
+			   mv.addObject("vehicle", vehicles);
+			   mv.setViewName("VehicleSearchResult");
+		       return mv;
+		    }
+		 	 
 	
 	 
 	 

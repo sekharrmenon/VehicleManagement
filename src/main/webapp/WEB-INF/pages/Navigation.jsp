@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="resources/css/style.css">
         <script src="resources/bootstrap/js/bootstrap.min.js"></script>
 </head>
-		<!-- Top menu -->
+				<!-- Top menu -->
 		<nav class="navbar navbar-inverse" role="navigation">
 			<div class="container">
 				<div class="navbar-header wow fadeIn">
@@ -24,24 +24,43 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.html">Vehicle Management</a>
+					<a class="navbar-brand" href="/vehiclemanagement/">Vehicle Management</a>
 				</div>
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="top-navbar-1">
-					<ul class="nav navbar-nav navbar-right navbar-search-button">
-						<li><a class="search-button" href="#"><i class="fa fa-search"></i></a></li>
-					</ul>
-					<form class="navbar-form navbar-search-form disabled wow fadeInLeft" role="form" action="" method="post">
-						<div class="form-group">
-							<input type="text" name="search" placeholder="Search..." class="search form-control">
-						</div>
-					</form>
+<!-- 					<ul class="nav navbar-nav navbar-right navbar-search-button"> -->
+<!-- 						<li><a class="search-button" href="#"><i class="fa fa-search"></i></a></li> -->
+<!-- 					</ul> -->
+<!-- 					<form class="navbar-form navbar-search-form disabled wow fadeInLeft" role="form" action="" method="post"> -->
+<!-- 						<div class="form-group"> -->
+<!-- 							<input type="text" name="search" placeholder="Search..." class="search form-control"> -->
+<!-- 						</div> -->
+<!-- 					</form> -->
 					<ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
-						<li><a href="/vehiclemanagement/">Home</a></li>
-						<c:if test="${user.access.view==true}"><li><a href="/vehiclemanagement/login">Login</a></li></c:if>				
-						<li><a href="/vehiclemanagement/newVehicle">Add vehicle</a></li>
-						<li><a href="#">Highligths</a></li>
-						<li><a href="/vehiclemanagement/view">View</a></li>
+<%-- 						<c:if test="${user.access.view==true}"><li><a href="/vehiclemanagement/login">Login</a></li></c:if>	 --%>
+						<c:choose>
+    						<c:when test="${empty user.name}">
+        						<li><a href="/vehiclemanagement/login">Login</a></li>
+    						</c:when>
+    					<c:otherwise>
+        				<li><a href="/vehiclemanagement/logout">Logout</a></li>
+    						</c:otherwise>
+					</c:choose>
+					<c:choose>
+    						<c:when test="${not empty user.access.create}">
+        						<li><a href="/vehiclemanagement/newVehicle">Add vehicle</a></li>
+    						</c:when>
+					</c:choose>	
+					<c:choose>
+    						<c:when test="${not empty user.access.view}">
+        						<li><a href="/vehiclemanagement/view">View</a></li>
+    						</c:when>
+					</c:choose>
+					<c:choose>
+    						<c:when test="${not empty user.name}">
+        						<li><a href="/vehiclemanagement/trackVehicle">Highligths</a></li>	
+    						</c:when>
+					</c:choose>												
 					</ul>
 				</div>
 			</div>

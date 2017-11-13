@@ -1,14 +1,6 @@
 jQuery(document).ready(function() {
 	
-    /*
-        Background slideshow
-    */
-    $('.top-content').backstretch("resources/img/backgrounds/1.jpg");
-    
-    /*
-        Wow
-    */
-    new WOW().init();
+   new WOW().init();
     
     /*
         Search form

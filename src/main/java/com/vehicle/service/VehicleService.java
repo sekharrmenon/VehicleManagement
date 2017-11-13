@@ -1,9 +1,11 @@
 package com.vehicle.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.vehicle.dto.Login;
 import com.vehicle.dto.LoginDTO;
+import com.vehicle.dto.SearchDTO;
 import com.vehicle.dto.Vehicle;
 import com.vehicle.dto.VehicleDTO;
 
@@ -20,6 +22,10 @@ public interface VehicleService {
 	Vehicle findById(int id);
 
 	List<Vehicle> findbyUser(String name);
+
+	Set<Vehicle> search(SearchDTO vehicle);
+
+	Set<Vehicle> searchByType(SearchDTO vehicle);
 	
 	
 	

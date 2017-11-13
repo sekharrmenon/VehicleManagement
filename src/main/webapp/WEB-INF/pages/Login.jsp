@@ -8,53 +8,81 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
-        <script src="resources/bootstrap/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="resources/css/login.css">
 </head>
 <body>
-<div class="container">
+<div id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 <spring:url value="/login" var="authenticateUrl" />
-
-    <div class="row">
-		<div class="span12">
-			<form:form class="form-horizontal" action="${authenticateUrl}" method="POST" modelAttribute="loginForm">			
-			  <fieldset>
-			    <div id="legend">
-			      <legend class="">Login</legend>
-			    </div>
-			    <div class="control-group">
-			      <!-- Username -->
-			      <spring:bind path="username">
+    	  <div class="modal-dialog">
+				<div class="loginmodal-container">
+					<h1>Login to Your Account</h1><br>
+				  <form:form class="form-horizontal" action="${authenticateUrl}" method="POST" modelAttribute="loginForm">				  	
+				<spring:bind path="username">
 			      <div class="form-group ${status.error ? 'has-error' : ''}">
-			      <label class="control-label"  for="username">Username</label>
 			      <div class="controls">
-			        <form:input  type="text" id="username" path="username" name="username" placeholder="" class="input-xlarge"/>
+			        <form:input  type="text" id="username" path="username" name="username" placeholder="Username" class="input-xlarge"/>
 			        <form:errors path="username" class="control-label" />
 			      </div>
 			      </div>
 			      </spring:bind>
-			    </div>
-			    <div class="control-group">
-			    <spring:bind path="password">
-			      <!-- Password-->
-			      <label class="control-label" for="password">Password</label>
+			<spring:bind path="password">
 			      <div class="form-group ${status.error ? 'has-error' : ''}">
 			      <div class="controls">
-			       <form:password id="password" path="password" name="password" placeholder="" class="input-xlarge"/>
+			       <form:password id="password" path="password" name="password" placeholder="Password" class="input-xlarge"/>
 			        <form:errors path="password" class="control-label" />
 			      </div>
 			      </div>
 			   </spring:bind>
-			    </div>
-			    <div class="control-group">
-			      <!-- Button -->
-			      <div class="controls">
-			        <button class="btn btn-success" type="submit">Login</button>
-			      </div>
-			    </div>
-			  </fieldset>
-			</form:form>
-		</div>
+					<input type="submit" name="login" class="login loginmodal-submit">
+				  </form:form>
+				</div>
+			</div>
 	</div>
-</div>
+<!-- <div class="container"> -->
+<%-- <spring:url value="/login" var="authenticateUrl" /> --%>
+<!--     <div class="row"> -->
+<!-- 		<div class="span12"> -->
+<%-- 			<form:form class="form-horizontal" action="${authenticateUrl}" method="POST" modelAttribute="loginForm">			 --%>
+<!-- 			  <fieldset> -->
+<!-- 			    <div id="legend"> -->
+<!-- 			      <legend class="">Login</legend> -->
+<!-- 			    </div> -->
+<!-- 			    <div class="control-group"> -->
+<!-- 			      Username -->
+<%-- 			      <spring:bind path="username"> --%>
+<%-- 			      <div class="form-group ${status.error ? 'has-error' : ''}"> --%>
+<!-- 			      <label class="control-label"  for="username">Username</label> -->
+<!-- 			      <div class="controls"> -->
+<%-- 			        <form:input  type="text" id="username" path="username" name="username" placeholder="" class="input-xlarge"/> --%>
+<%-- 			        <form:errors path="username" class="control-label" /> --%>
+<!-- 			      </div> -->
+<!-- 			      </div> -->
+<%-- 			      </spring:bind> --%>
+<!-- 			    </div> -->
+<!-- 			    <div class="control-group"> -->
+<%-- 			    <spring:bind path="password"> --%>
+<!-- 			      Password -->
+<!-- 			      <label class="control-label" for="password">Password</label> -->
+<%-- 			      <div class="form-group ${status.error ? 'has-error' : ''}"> --%>
+<!-- 			      <div class="controls"> -->
+<%-- 			       <form:password id="password" path="password" name="password" placeholder="" class="input-xlarge"/> --%>
+<%-- 			        <form:errors path="password" class="control-label" /> --%>
+<!-- 			      </div> -->
+<!-- 			      </div> -->
+<%-- 			   </spring:bind> --%>
+<!-- 			    </div> -->
+<!-- 			    <div class="control-group"> -->
+<!-- 			      Button -->
+<!-- 			      <div class="controls"> -->
+<!-- 			        <button class="btn btn-success" type="submit">Login</button> -->
+<!-- 			      </div> -->
+<!-- 			    </div> -->
+<!-- 			  </fieldset> -->
+<%-- 			</form:form> --%>
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- </div> -->
 </body>
+		<script src="resources/js/jquery-1.11.1.min.js"></script>
+        <script src="resources/bootstrap/js/bootstrap.min.js"></script>
 </html>

@@ -7,9 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+
 
 @Entity
 @Table(name="vehicle",uniqueConstraints = { @UniqueConstraint(columnNames = "vehicle_id")})
+@Document(indexName = "vehicles", type = "vehicleType")
 public class Vehicle {
 	
 	
@@ -106,5 +109,22 @@ public class Vehicle {
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
+	
+	public String toString() {
+		        return "Vehicle [(" + getVehiclename() + ", " + getId() + ", " + getBrand() + ", " + getModel() +", " + getType() +", " + getLattitude() +", " + getLongitude() +")]";
+		    }
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if(this == obj) return true;
+	    if(!(obj instanceof Vehicle)) return false;
+	    return this.id.equals(((Vehicle) obj).id);
+	}
+
+	@Override
+	public int hashCode() {        
+	    return this.id.hashCode();
+	}
+
 
 }

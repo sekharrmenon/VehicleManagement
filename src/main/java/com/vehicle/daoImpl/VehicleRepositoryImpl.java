@@ -4,28 +4,25 @@ package com.vehicle.daoImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vehicle.dao.VehicleRepository;
+import com.vehicle.dto.Login;
 import com.vehicle.dto.LoginDTO;
 import com.vehicle.dto.Vehicle;
-import com.vehicle.dto.VehicleDTO;
-import com.vehicle.serviceImpl.VehicleServiceImpl;
-import com.vehicle.dto.Login;
 
 
 @Repository
+@Transactional
 public class VehicleRepositoryImpl implements VehicleRepository {
 	
 	@Autowired
@@ -33,6 +30,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 	
 	private static final Logger logger = LoggerFactory
 	        .getLogger(VehicleRepositoryImpl.class);
+	
 	
 	
 	@Override
@@ -58,41 +56,41 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 	}
 
 	@Override
-	public String save(Vehicle vehicle) {
+	public Integer saveVehicle(Vehicle vehicle) {
 		Session session = sessionFactory.openSession();
 	    try {
 			Transaction tx = session.beginTransaction();
 			session.save(vehicle);
 			tx.commit();
-			logger.info("Vehicle added successfully");
+			logger.info("Vehicle added successfully"+vehicle.getId());
 			
 		} catch (Exception e) {
 			logger.info("Error creating vehicle"+e.getMessage());
-			return "Error creating vehicle";
+			return 0;
 		}finally{
 			session.close();
 		}
 	    
-	    return "Vehicle added successfully";
+	    return vehicle.getId();
 	}
 
 	@Override
-	public String update(Vehicle vehicle) {
+	public String updateVehicle(Vehicle vehicle) {
 		Session session = sessionFactory.openSession();
 	    try {
 			Transaction tx = session.beginTransaction();
 			session.update(vehicle);
 			tx.commit();
-			logger.info("Vehicle update successfully");
+			logger.info("Vehicle added successfully"+vehicle.getId());
 			
 		} catch (Exception e) {
 			logger.info("Error updating vehicle"+e.getMessage());
-			return "Error updating vehicle";
+			return"Error updating Vehicle";
 		}finally{
 			session.close();
 		}
 	    
-	    return "Vehicle updated successfully";
+	    return "Vehicle updating successfully";
 		
 	}
 
@@ -113,7 +111,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 	}
 
 	@Override
-	public String delete(int id) {
+	public String deleteVehicle(int id) {
 		Session session = sessionFactory.openSession();
 		try {
 			Query q = session.createQuery("delete Vehicle where id=:vehicleId");

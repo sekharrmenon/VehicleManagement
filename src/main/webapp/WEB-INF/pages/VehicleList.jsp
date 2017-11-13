@@ -46,13 +46,19 @@
 				  <spring:url value="/vehicle/${vehicle.id}" var="viewUrl" />
 				  <spring:url value="/vehicle/${vehicle.id}/delete" var="deleteUrl" />
 				  <spring:url value="/vehicle/${vehicle.id}/update" var="updateUrl" />
-
-				  <button class="btn btn-info"
-                                          onclick="location.href='${viewUrl}'">View</button>
-				  <button class="btn btn-primary"
+				  
+				  <c:choose>
+    						<c:when test="${not empty user.access.edit}">
+        						<button class="btn btn-primary"
                                           onclick="location.href=('${updateUrl}');this.disabled=true">Update</button>
-				  <button class="btn btn-danger"
+    						</c:when>
+				</c:choose>
+				<c:choose>
+    						<c:when test="${not empty user.access.delete}">
+        						<button class="btn btn-danger"
                                            onclick="location.href=('${deleteUrl}');this.disabled=true">Delete</button>
+    						</c:when>
+				</c:choose>
                                 </td>
 			    </tr>
 			</c:forEach>

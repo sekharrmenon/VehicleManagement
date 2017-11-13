@@ -1,22 +1,22 @@
-$(window).load(function(){
-	FnInitiateMap()
 
-});
-
+var map;
 $(document).ready(function() {
+	FnInitiateMap();
 	console.log("VehicleList")
 	console.log(VehicleList)
 	var VarIcon = FnGetMarkerIcon('blue');
-//	if(VehicleList.length()>0){
-//		for(int i=0;i<=VehicleList.length();i++){
-//			var VarLatitude = parseFloat(VehicleList[0].lattitude);
-//			var VarLongitude = parseFloat(VehicleList[0].longitude);
-//			var object={}
-//			object["latlng"]= {"lat" : VarLatitude,"lng":VarLongitude};
-//			var geomarker=L.marker(object.latlng,{icon: VarIcon, draggable: true}).addTo(map);
-//			map.setView(new L.LatLng(VarLatitude, VarLongitude),4);
-//		}
-//	}
+	if(VehicleList.length>0){
+		for(var i=0;i<VehicleList.length;i++){
+			var data="<b>VehicleName</b>:"+VehicleList[0].vehiclename+"<br>"+"<b>VehicleBrand</b>:"+VehicleList[0].brand+"<br>"+"<b>VehicleModel</b>:"+VehicleList[0].model;
+			var VarLatitude = parseFloat(VehicleList[i].lattitude);
+			var VarLongitude = parseFloat(VehicleList[i].longitude);
+			var object={}
+			object["latlng"]= {"lat" : VarLatitude,"lng":VarLongitude};
+			var geomarker=L.marker(object.latlng,{icon: VarIcon, draggable: false}).addTo(map).bindPopup(data);
+			map.setView(new L.LatLng(VarLatitude, VarLongitude),4);
+
+		}
+	}
 });
 
 

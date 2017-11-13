@@ -33,9 +33,11 @@ $(document).ready(function() {
 				icon : VarIcon,
 				draggable : true
 			}).addTo(map);
+			var c = e.latlng
 			ArrPolyMarkers.push(geomarker);
 			var fc = ArrPolyMarkers[0].getLatLng();
-			var dis = $('#radius').val() * 1000;
+			var dis = fc.distanceTo(c);
+			//var dis = $('#radius').val() * 1000;
 			clickCircle = L.circle(fc, dis, null).addTo(map);
 			$('#gllpLatitude').val(fc.lat);
 			$('#gllpLongitude').val(fc.lng);
