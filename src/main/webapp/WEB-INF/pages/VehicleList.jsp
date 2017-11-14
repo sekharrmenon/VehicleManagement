@@ -47,18 +47,14 @@
 				  <spring:url value="/vehicle/${vehicle.id}/delete" var="deleteUrl" />
 				  <spring:url value="/vehicle/${vehicle.id}/update" var="updateUrl" />
 				  
-				  <c:choose>
-    						<c:when test="${not empty user.access.edit}">
+				  <c:if test="${user.access.edit==true}">
         						<button class="btn btn-primary"
                                           onclick="location.href=('${updateUrl}');this.disabled=true">Update</button>
-    						</c:when>
-				</c:choose>
-				<c:choose>
-    						<c:when test="${not empty user.access.delete}">
+    			 </c:if>
+				<c:if test="${user.access.delete==true}">
         						<button class="btn btn-danger"
                                            onclick="location.href=('${deleteUrl}');this.disabled=true">Delete</button>
-    						</c:when>
-				</c:choose>
+    			</c:if>
                                 </td>
 			    </tr>
 			</c:forEach>

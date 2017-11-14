@@ -46,16 +46,12 @@
         				<li><a href="/vehiclemanagement/logout">Logout</a></li>
     						</c:otherwise>
 					</c:choose>
-					<c:choose>
-    						<c:when test="${not empty user.access.create}">
+    						<c:if test="${user.access.create==true}">
         						<li><a href="/vehiclemanagement/newVehicle">Add vehicle</a></li>
-    						</c:when>
-					</c:choose>	
-					<c:choose>
-    						<c:when test="${not empty user.access.view}">
+    						</c:if>
+					<c:if test="${user.access.view==true}">
         						<li><a href="/vehiclemanagement/view">View</a></li>
-    						</c:when>
-					</c:choose>
+    				</c:if>
 					<c:choose>
     						<c:when test="${not empty user.name}">
         						<li><a href="/vehiclemanagement/trackVehicle">Highligths</a></li>	

@@ -23,7 +23,7 @@ $(document).ready(function() {
 			$('#gllpLatitude').val(fc.lat);
 			$('#lattitude').val(fc.lat);
 			$('#gllpLongitude').val(fc.lng);
-			$('#longitude').val(fc.lat);
+			$('#longitude').val(fc.lng);
 		} else if (ArrPolyMarkers.length != 0) {
 			for (var i = 0; i < ArrPolyMarkers.length; i++) {
 				map.removeLayer(ArrPolyMarkers[i]);

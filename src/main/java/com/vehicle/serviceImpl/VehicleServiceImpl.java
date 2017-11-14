@@ -320,6 +320,32 @@ public class VehicleServiceImpl implements VehicleService {
 		} catch (Exception e) {
 			logger.info("error fetching from elasticSearch"+e.getMessage());
 		}
+		
+		if(tempLists.size()==0){
+			String[] arr=vehicle.getSearch().split("[\\s@&.?$+-,]");
+	    	for(String s: arr){
+	    		SearchQuery searchQuery4 = new NativeSearchQueryBuilder()
+						  .withQuery(new MultiMatchQueryBuilder(s)
+							.queryName("type:"+vehicle.getVehicleType())
+						    .field("vehiclename")
+						    .field("brand")
+						    .field("model")
+						    .field("type")
+						    .operator(Operator.AND)
+							.fuzziness(Fuzziness.ONE)
+							.prefixLength(3)) 
+						  .build(); 
+				
+				try {
+					Iterable<Vehicle> articles =  config.elasticsearchTemplate().queryForList(searchQuery4, Vehicle.class);
+					Set<Vehicle>tempListFuzz = Sets.newHashSet(articles);
+					tempLists.addAll(tempListFuzz);
+				} catch (Exception e) {
+					logger.info("error fetching from elasticSearch"+e.getMessage());
+				}
+	    	}
+			
+		}
 		for(Vehicle myVehicle:tempLists){
 			if(myVehicle.getType().equalsIgnoreCase(vehicle.getVehicleType())){
 				myLists.add(myVehicle);

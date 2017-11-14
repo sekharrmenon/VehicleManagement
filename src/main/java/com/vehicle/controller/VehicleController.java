@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -33,6 +34,7 @@ import com.vehicle.dto.Vehicle;
 import com.vehicle.dto.VehicleDTO;
 import com.vehicle.service.VehicleService;
 import com.vehicle.utils.LoginValidator;
+import com.vehicle.utils.SearchValidator;
 import com.vehicle.utils.VehicleValidator;
 
 
@@ -49,6 +51,9 @@ public class VehicleController {
 	   
 	   @Autowired
 	   private VehicleValidator vehicleValidator;
+	   
+	   @Autowired
+	   private SearchValidator searchValidator;
 	   
 	   @InitBinder("loginform")
 	   protected void loginBinder(WebDataBinder binder) {
@@ -83,11 +88,13 @@ public class VehicleController {
 	    }
 	 
 	 @RequestMapping(value="/logout", method = RequestMethod.GET)
-	    public String logout(ModelMap model,HttpSession session,final RedirectAttributes redirectAttributes) {
+	    public String logout(ModelMap model,HttpServletRequest request,HttpSession session,final RedirectAttributes redirectAttributes) {
 		 logger.info("Inside the lgout method");
 		   ModelAndView mv = new ModelAndView();
 		   session.removeAttribute("userDetails");
-		   session.invalidate();
+		   request.getSession(false).invalidate();
+		   request.getSession(true);
+		   
 		   redirectAttributes.addFlashAttribute("user", new Login());
 		   return  "redirect:/";
 	    }
@@ -153,7 +160,7 @@ public class VehicleController {
 		   ModelAndView mv = new ModelAndView();
 		   mv.addObject("user",loggedUser);
 		   mv.setViewName("VehicleList");
-		   List<Vehicle> vehicles=vehicleService.listVehicles();
+		   List<Vehicle> vehicles=vehicleService.findbyUser(loggedUser.getName());
 		   mv.addObject("vehicle", vehicles);
 		return  mv;
 	    }
@@ -212,21 +219,30 @@ public class VehicleController {
 		    }
 		 
 		 @RequestMapping(value="/search", method = RequestMethod.POST)
-		    public ModelAndView search(HttpSession session,@ModelAttribute("searchForm")@Validated SearchDTO vehicle) {
+		    public ModelAndView search(HttpSession session,@ModelAttribute("searchForm")@Validated SearchDTO vehicle,
+		    		BindingResult result) {
 			 logger.info("Inside the track vehicle method");
 			   ModelAndView mv = new ModelAndView();
-			  // Login loggedUser=(Login) session.getAttribute("userDetails");
-			   Set<Vehicle> vehicles = new HashSet<Vehicle>();
-			   if(!(vehicle.getVehicleType().equalsIgnoreCase("all"))){
-				    vehicles=vehicleService.searchByType(vehicle);   
-			   }else{
-				    vehicles=vehicleService.search(vehicle);
-			   }
-			  // mv.addObject("user",loggedUser);
-			   mv.addObject("searchParam", vehicle.getSearch());
-			   mv.addObject("vehicle", vehicles);
-			   mv.setViewName("VehicleSearchResult");
-		       return mv;
+			   searchValidator.validate(vehicle, result);
+			   if (result.hasErrors()) {
+				   //mv.addObject("searchForm", new SearchDTO());
+				   mv.setViewName("VehicleForm");
+				   return mv ;
+			      }else {
+			    	  Set<Vehicle> vehicles = new HashSet<Vehicle>();
+					   if(!(vehicle.getVehicleType().equalsIgnoreCase("all"))){
+						    vehicles=vehicleService.searchByType(vehicle);   
+					   }else{
+						    vehicles=vehicleService.search(vehicle);
+					   }
+					  // mv.addObject("user",loggedUser);
+					   mv.addObject("searchParam", vehicle.getSearch());
+					   mv.addObject("vehicle", vehicles);
+					   mv.setViewName("VehicleSearchResult");
+					   return mv;
+			      }
+			   
+		      
 		    }
 		 	 
 	
